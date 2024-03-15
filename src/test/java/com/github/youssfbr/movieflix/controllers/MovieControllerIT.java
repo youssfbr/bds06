@@ -1,6 +1,6 @@
 package com.github.youssfbr.movieflix.controllers;
 
-import com.github.movieflix.tests.TokenUtil;
+import com.github.youssfbr.movieflix.tests.TokenUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
