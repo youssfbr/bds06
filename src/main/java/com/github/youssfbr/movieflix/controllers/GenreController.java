@@ -2,7 +2,6 @@ package com.github.youssfbr.movieflix.controllers;
 
 import com.github.youssfbr.movieflix.dtos.GenreDTO;
 import com.github.youssfbr.movieflix.services.GenreService;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +19,8 @@ public class GenreController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GenreDTO>> findAll(Pageable pageable) {
-        final List<GenreDTO> all = genreService.findAll();
-        return ResponseEntity.ok(all);
+    public ResponseEntity<List<GenreDTO>> findAll() {
+        return ResponseEntity.ok(genreService.findAll());
     }
 
 }

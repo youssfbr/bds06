@@ -2,11 +2,10 @@ package com.github.youssfbr.movieflix.controllers;
 
 import com.github.youssfbr.movieflix.dtos.MovieDTO;
 import com.github.youssfbr.movieflix.services.MovieService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/movies")
@@ -19,7 +18,15 @@ public class MovieController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MovieDTO> findById(@PathVariable Long id) {
-        final MovieDTO byId = movieService.findById(id);
-        return ResponseEntity.ok(byId);
+        return ResponseEntity.ok(movieService.findById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<MovieDTO>> findByGenre(
+            @RequestParam(value = "genreId", defaultValue = "0") Long genreId,
+            Pageable pageable)
+    {
+        final Page<MovieDTO> movieDTOS = movieService.finByGenre(genreId , pageable);
+        return ResponseEntity.ok().body(movieDTOS);
     }
 }
