@@ -8,6 +8,8 @@ import com.github.youssfbr.movieflix.entities.User;
 import com.github.youssfbr.movieflix.repositories.RoleRepository;
 import com.github.youssfbr.movieflix.repositories.UserRepository;
 
+import com.github.youssfbr.movieflix.services.exceptions.DatabaseException;
+import com.github.youssfbr.movieflix.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -40,7 +42,7 @@ public class UserService {
     public UserDTO findById(Long id) {
         return repository.findById(id)
                 .map(UserDTO::new)
-                .orElseThrow(() -> new RuntimeException("Entity not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
     }
 
     @Transactional
@@ -63,7 +65,7 @@ public class UserService {
             return new UserDTO(userUpdated);
         }
         catch (Exception e) {
-            throw new RuntimeException("Id not found " + id);
+            throw new ResourceNotFoundException("Id not found " + id);
         }
     }
 
@@ -72,10 +74,10 @@ public class UserService {
             repository.deleteById(id);
         }
         catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Id not found " + id);
+            throw new ResourceNotFoundException("Id not found " + id);
         }
         catch (DataIntegrityViolationException e) {
-            throw new RuntimeException("Integrity violation");
+            throw new DatabaseException("Integrity violation");
         }
     }
 
