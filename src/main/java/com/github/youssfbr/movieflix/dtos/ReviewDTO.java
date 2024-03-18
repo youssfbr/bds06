@@ -1,5 +1,6 @@
 package com.github.youssfbr.movieflix.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.youssfbr.movieflix.entities.Movie;
 import com.github.youssfbr.movieflix.entities.Review;
 import com.github.youssfbr.movieflix.entities.User;
@@ -8,7 +9,9 @@ public class ReviewDTO {
 
     private Long id;
     private String text;
+    @JsonIgnore
     private Movie movie;
+    @JsonIgnore
     private User user;
 
     public ReviewDTO() { }
