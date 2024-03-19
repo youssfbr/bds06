@@ -5,9 +5,12 @@ import com.github.youssfbr.movieflix.entities.Movie;
 import com.github.youssfbr.movieflix.entities.Review;
 import com.github.youssfbr.movieflix.entities.User;
 
+import javax.validation.constraints.NotBlank;
+
 public class ReviewDTO {
 
     private Long id;
+    @NotBlank(message = "Campo obrigatório")
     private String text;
     @JsonIgnore
     private Movie movie;

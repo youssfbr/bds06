@@ -2,6 +2,8 @@ package com.github.youssfbr.movieflix.dtos;
 
 import com.github.youssfbr.movieflix.entities.Movie;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +12,10 @@ public class MovieDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    @NotBlank(message = "Campo obrigatório")
     private String title;
     private String subTitle;
+    @Positive(message = "Ano deve ser um valor positivo")
     private Integer year;
     private String imgUrl;
     private String synopsis;
