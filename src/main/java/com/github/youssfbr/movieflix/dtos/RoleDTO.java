@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 public class RoleDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-
     private Long id;
     @NotBlank(message = "Campo obrigatório")
     private String authority;
@@ -31,4 +30,5 @@ public class RoleDTO implements Serializable {
     public String getAuthority() {
         return authority;
     }
+
 }

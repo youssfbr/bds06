@@ -1,36 +1,38 @@
 package com.github.youssfbr.movieflix.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.youssfbr.movieflix.entities.Movie;
 import com.github.youssfbr.movieflix.entities.Review;
 import com.github.youssfbr.movieflix.entities.User;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
-public class ReviewDTO {
-
+public class ReviewDTO implements Serializable{
+    private static final long serialVersionUID = 1L;
     private Long id;
     @NotBlank(message = "Campo obrigatório")
     private String text;
-    @JsonIgnore
-    private Movie movie;
-    @JsonIgnore
-    private User user;
+    private Long movieId;
+    private UserDTO user;
 
     public ReviewDTO() { }
 
-    public ReviewDTO(Long id , String text , Movie movie , User user) {
+    public ReviewDTO(Long id, String text, Long movieId) {
         this.id = id;
         this.text = text;
-        this.movie = movie;
-        this.user = user;
+        this.movieId = movieId;
+    }
+
+    public ReviewDTO(Review entity, User user) {
+        id = entity.getId();
+        text = entity.getText();
+        movieId = entity.getMovie().getId();
+        this.user = new UserDTO(user);
     }
 
     public ReviewDTO(Review entity) {
         id = entity.getId();
         text = entity.getText();
-        movie = entity.getMovie();
-        user = entity.getUser();
+        movieId = entity.getMovie().getId();
     }
 
     public Long getId() {
@@ -49,23 +51,16 @@ public class ReviewDTO {
         this.text = text;
     }
 
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public Long getMovieId() {
+        return movieId;
     }
 
     public void setMovieId(Long movieId) {
-        this.movie.setId(movieId);
+        this.movieId = movieId;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

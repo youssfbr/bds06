@@ -61,24 +61,26 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory()
-		.withClient(clientId)
-		.secret(passwordEncoder.encode(clientSecret))
-		.scopes("read" , "write")
-		.authorizedGrantTypes("password")
-		.accessTokenValiditySeconds(jwtDuration);
 
+		clients.inMemory()
+				.withClient(clientId)
+				.secret(passwordEncoder.encode(clientSecret))
+				.scopes("read", "write")
+				.authorizedGrantTypes("password", "refresh_token")
+				.accessTokenValiditySeconds(jwtDuration)
+				.refreshTokenValiditySeconds(jwtDuration);
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
-		TokenEnhancerChain chain = new TokenEnhancerChain();
+		final TokenEnhancerChain chain = new TokenEnhancerChain();
 		chain.setTokenEnhancers(Arrays.asList(accessTokenConverter, tokenEnhancer));
 
 		endpoints.authenticationManager(authenticationManager)
 				.tokenStore(tokenStore)
 				.accessTokenConverter(accessTokenConverter)
-				.tokenEnhancer(chain);
+				.tokenEnhancer(chain)
+				.userDetailsService(userDetailsService);
 	}
 }

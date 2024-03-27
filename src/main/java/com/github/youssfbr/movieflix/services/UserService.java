@@ -1,13 +1,9 @@
 package com.github.youssfbr.movieflix.services;
 
-import com.github.youssfbr.movieflix.dtos.RoleDTO;
 import com.github.youssfbr.movieflix.dtos.UserDTO;
 import com.github.youssfbr.movieflix.dtos.UserInsertDTO;
-import com.github.youssfbr.movieflix.entities.Role;
 import com.github.youssfbr.movieflix.entities.User;
-import com.github.youssfbr.movieflix.repositories.RoleRepository;
 import com.github.youssfbr.movieflix.repositories.UserRepository;
-
 import com.github.youssfbr.movieflix.services.exceptions.DatabaseException;
 import com.github.youssfbr.movieflix.services.exceptions.ResourceNotFoundException;
 import org.slf4j.Logger;
@@ -28,12 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository repository;
-    private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository,  RoleRepository roleRepository , BCryptPasswordEncoder passwordEncoder) {//AuthService authService ,
+    public UserService(UserRepository repository, BCryptPasswordEncoder passwordEncoder) {
         this.repository = repository;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -86,14 +80,7 @@ public class UserService implements UserDetailsService {
     }
 
     private void copyDtoToEntity(UserDTO dto , User entity) {
-
         BeanUtils.copyProperties(dto , entity);
-
-        entity.getRoles().clear();
-        for (RoleDTO roleDTO : dto.getRoles()) {
-            final Role role = roleRepository.getOne(roleDTO.getId());
-            entity.getRoles().add(role);
-        }
     }
 
     @Override
@@ -106,8 +93,8 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("Email not found");
         }
         logger.info("User found: " + s);
+        user.getRoles().forEach(role -> logger.info(role.getAuthority()));
 
         return user;
     }
 }
-

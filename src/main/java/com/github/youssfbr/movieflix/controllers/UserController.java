@@ -23,8 +23,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<Page<UserDTO>> findAllPaged(Pageable pageable) {
-        final Page<UserDTO> allPaged = userService.findAllPaged(pageable);
-        return ResponseEntity.ok(allPaged);
+        return ResponseEntity.ok(userService.findAllPaged(pageable));
     }
 
     @GetMapping("/{id}")

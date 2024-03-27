@@ -1,7 +1,9 @@
 package com.github.youssfbr.movieflix.controllers.exceptions;
 
 import com.github.youssfbr.movieflix.services.exceptions.DatabaseException;
+import com.github.youssfbr.movieflix.services.exceptions.ForbiddenException;
 import com.github.youssfbr.movieflix.services.exceptions.ResourceNotFoundException;
+import com.github.youssfbr.movieflix.services.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -59,5 +61,16 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(unprocessableEntity).body(err);
 	}
 
+	@ExceptionHandler(ForbiddenException.class)
+	public ResponseEntity<OAuthCustomError> forbidden(ForbiddenException e, HttpServletRequest request) {
+		OAuthCustomError err = new OAuthCustomError("Forbidden", e.getMessage());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+	}
+
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<OAuthCustomError> unauthorized(UnauthorizedException e, HttpServletRequest request) {
+		OAuthCustomError err = new OAuthCustomError("Unauthorized", e.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
+	}
 
 }
